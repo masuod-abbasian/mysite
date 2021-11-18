@@ -7,10 +7,15 @@
     <title>Document</title>
 </head>
 <body>
-
-
-    {{post.published_date}}
+    {%block body%}
+    {%for item in list1%}
     
+    {{l=list1.index(item)}}
+    {{k=list1[l+1]}}
+    {%endif%}
+    {%endfor%}
+    {% url 'blog:single' pid=k %}
 
+    {% endblock %}
 </body>
 </html>
