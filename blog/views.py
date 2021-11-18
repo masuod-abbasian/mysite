@@ -15,16 +15,25 @@ def blog_single(request,pid):
     # pid = int(pid)
     post_i = post_index.index(pid)
     # if post_i <= len(post_index):
+    # try:
+    if post_i >= len(post_index) :
+        id_next = post_index[post_i+1]
+    # except IndexError:
+        # posts = get_object_or_404(post, pk=pid)    
     
-    id_next = post_index[post_i+1]
-    
-    # else:
-        # id_next = pid
-    # if post_i > len(post_index)-1 and post_i <= 0:
-    
-    id_prev = post_index[post_i-1]
-    # else:
-    #     id_prev = pid
+    else:
+        
+        id_next = pid
+    # if post_i >= len(post_index) :
+    # try:
+    if post_i <= len(post_index):
+        id_prev = post_index[post_i-1]
+        
+    # except IndexError:
+        # posts = get_object_or_404(post, pk=pid)     
+    else:
+        
+        id_prev = pid
     
     # else:
         # id_prev = pid
