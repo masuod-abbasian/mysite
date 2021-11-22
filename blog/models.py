@@ -25,3 +25,8 @@ class POST(models.Model):
         
     def __str__(self):
         return "{} - {}".format(self.title,self.id)
+
+    
+
+    # def snippets(self):
+    #     return self.content[:100] + '...'
