@@ -1,3 +1,4 @@
+{% load blog_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,15 +8,8 @@
     <title>Document</title>
 </head>
 <body>
-    {%block body%}
-    {%for item in list1%}
-    
-    {{l=list1.index(item)}}
-    {{k=list1[l+1]}}
-    {%endif%}
-    {%endfor%}
-    {% url 'blog:single' pid=k %}
-
-    {% endblock %}
-</body>
+    <h1>Testing page</h1>
+    <p>test: {% posts as totalposts %}</p>
+    {% popularposts %}
+</body>   
 </html>
