@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+from taggit.managers import TaggableManager
 
 # Create your models here.
 class Category(models.Model):
@@ -13,7 +15,7 @@ class POST(models.Model):
     title = models.CharField(max_length=250)
     content = models.TextField()
     category = models.ManyToManyField(Category)
-    # tag
+    tags = TaggableManager()
     counted_view = models.IntegerField(default=0)
     status = models.BooleanField(default=False)
     published_date = models.DateTimeField(null=True)
@@ -25,8 +27,9 @@ class POST(models.Model):
         
     def __str__(self):
         return "{} - {}".format(self.title,self.id)
-
     
-
+    def get_absolute_url(self):
+        return reverse('blog:single' ,kwargs={'pid':self.id})
+    
     # def snippets(self):
     #     return self.content[:100] + '...'
