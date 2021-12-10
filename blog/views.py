@@ -1,7 +1,9 @@
 from django.shortcuts import get_list_or_404, render, get_object_or_404
-from blog.models import POST
+from blog.models import POST,Comment
 import datetime
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
+from blog.forms import CommentForm
+from django.contrib import messages
 # Create your views here.
 def blog_view(request,**kwargs):
     posts = POST.objects.filter(status=1)
@@ -24,9 +26,17 @@ def blog_view(request,**kwargs):
     return render(request,'blog/blog-home.html',context)
 
 def blog_single(request,pid):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request,messages.SUCCESS,'your comment submited succsesfully')
+        else:
+            messages.add_message(request,messages.ERROR,'your comment didnt submited ')
     post = POST.objects.filter(status=1)
     posts = get_object_or_404(post,pk=pid)
-    
+    comments = Comment.objects.filter(post = posts.id,approved=True)
+    form = CommentForm()
     prev = POST.objects.filter(id__lt=posts.id).order_by('-id').first()
     if prev == None:
         prev_post = posts
@@ -47,8 +57,8 @@ def blog_single(request,pid):
     # prev_post = posts.get_next_by_id()
     # next_post = posts.get_previous_by_date()
 
-    
-    context = {'post': posts,'prev_post': prev_post, 'next_post':next_post}
+        
+    context = {'post': posts,'prev_post': prev_post, 'next_post':next_post, 'comments':comments,'form':form}
     
 
 
