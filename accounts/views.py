@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from accounts.forms import signupform
+from accounts.backends import EmailBackend
 
 # Create your views here.
 def login_view(request):
@@ -16,20 +17,19 @@ def login_view(request):
             form = AuthenticationForm(request=request, data=request.POST)
             print(form)
             if form.is_valid():
-                email = form.cleaned_data.get('email')
+                # email = form.cleaned_data.get('email')
                 username = form.cleaned_data.get('username')
                 password = form.cleaned_data.get('password')
-                print(email)
-                try:
-                    user = authenticate(request, username=username, password=password)
-                finally:
-                    user = authenticate(request, username=email, password=password)
-                print('user')
+                # print(email)
+                print(username)
+                user = AuthenticationForm(request, username=username, password=password)
+                
+                print(user)
                 if user is not None:
                     login(request, user)
                     return redirect('/')
         
-        form = AuthenticationForm()
+        form = EmailBackend()
         context = {'form':form}
     # if request.user.is_authenticated:
     #     msg = f'user is authenticated as {request.user.username}'
