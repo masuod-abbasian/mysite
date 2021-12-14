@@ -1,10 +1,15 @@
-from django.shortcuts import get_list_or_404, render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 from blog.models import POST,Comment
 import datetime
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from blog.forms import CommentForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 # Create your views here.
+
+# @login_required
 def blog_view(request,**kwargs):
     posts = POST.objects.filter(status=1)
     if kwargs.get('cat_name') != None:
@@ -35,39 +40,44 @@ def blog_single(request,pid):
             messages.add_message(request,messages.ERROR,'your comment didnt submited ')
     post = POST.objects.filter(status=1)
     posts = get_object_or_404(post,pk=pid)
-    comments = Comment.objects.filter(post = posts.id,approved=True)
-    form = CommentForm()
-    prev = POST.objects.filter(id__lt=posts.id).order_by('-id').first()
-    if prev == None:
-        prev_post = posts
-    else:
-        prev_post = prev
-    
-    #     prev = POST.objects.filter(id__lt=posts.id).order_by('-id').first()
-    #     prev_post = get_object_or_404(prev)
-    
-    next = POST.objects.filter(id__gt=posts.id).order_by('id').first()
-    if next == None:
-        next_post = posts
-    else:
-        next_post = next
-    
-    #     next = POST.objects.filter(id__gt=posts.id).order_by('id').first()
-    #     next_post = get_object_or_404(next)
-    # prev_post = posts.get_next_by_id()
-    # next_post = posts.get_previous_by_date()
-
+    if not posts.login_require:
+        comments = Comment.objects.filter(post = posts.id,approved=True)
+        form = CommentForm()
+        prev = POST.objects.filter(id__lt=posts.id).order_by('-id').first()
+        if prev == None:
+            prev_post = posts
+        else:
+            prev_post = prev
         
-    context = {'post': posts,'prev_post': prev_post, 'next_post':next_post, 'comments':comments,'form':form}
+        #     prev = POST.objects.filter(id__lt=posts.id).order_by('-id').first()
+        #     prev_post = get_object_or_404(prev)
+        
+        next = POST.objects.filter(id__gt=posts.id).order_by('id').first()
+        if next == None:
+            next_post = posts
+        else:
+            next_post = next
+        
+        #     next = POST.objects.filter(id__gt=posts.id).order_by('id').first()
+        #     next_post = get_object_or_404(next)
+        # prev_post = posts.get_next_by_id()
+        # next_post = posts.get_previous_by_date()
+
+            
+        context = {'post': posts,'prev_post': prev_post, 'next_post':next_post, 'comments':comments,'form':form}
+        
+
+
+        # posts = get_object_or_404(POST, pk=pid)
+        # posts.counted_view += 1 
+        # posts.save()
+        # context = {'posts': posts}
     
+        return render(request,'blog/blog-single.html',context)
+    else:
+        return HttpResponseRedirect(reverse('accounts:login'))
 
 
-    # posts = get_object_or_404(POST, pk=pid)
-    # posts.counted_view += 1 
-    # posts.save()
-    # context = {'posts': posts}
-   
-    return render(request,'blog/blog-single.html',context)
 
 def test(request):
     # post = POST.objects.get(id=pid)
