@@ -50,7 +50,7 @@ INSTALLED_APPS = [
 
     'website.apps.WebsiteConfig',
     'blog',
-    # 'accounts'
+    'accounts'
 ]
 
 # sites framework
@@ -202,3 +202,7 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
 
 LOGIN_REDIRECT_URL = '/'
+
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+
+EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
