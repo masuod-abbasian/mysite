@@ -40,7 +40,7 @@ urlpatterns = [
     path('__debug__/', include(debug_toolbar.urls)),
     path('summernote/', include('django_summernote.urls')),
     path('captcha/', include('captcha.urls')),
-    path('maintenance/', maintenance, name='maintenance'),
+    path('*', maintenance, name='maintenance'),
 ]
 
 handler404 = "mysite.views.page_not_found_view"

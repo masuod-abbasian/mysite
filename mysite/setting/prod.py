@@ -15,7 +15,7 @@ ALLOWED_HOSTS = ['127.0.0.1']
 # sites framework
 SITE_ID = 2
 
-MAINTENANCE_MODE = int(os.environ.get("MAINTENANCE_MODE", 0))
+# MAINTENANCE_MODE = int(os.environ.get("MAINTENANCE_MODE", 0))
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

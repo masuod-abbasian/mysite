@@ -16,7 +16,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-MAINTENANCE_MODE = int(os.environ.get("MAINTENANCE_MODE", 0))
+MAINTENANCE_MODE = int(os.environ.get("MAINTENANCE_MODE", 1))
 
 
 
@@ -99,7 +99,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-    "config.middleware.MaintenanceModeMiddleware",
+    "mysite.middleware.MaintenanceModeMiddleware",
 
 ]
 
