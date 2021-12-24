@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+
 # Create your views here.
 
 # @login_required
@@ -104,3 +105,6 @@ def blog_search(request):
 
     context = {'posts': posts}
     return render(request,'blog/blog-home.html',context)
+
+
+

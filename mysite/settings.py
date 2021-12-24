@@ -11,11 +11,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+MAINTENANCE_MODE = int(os.environ.get("MAINTENANCE_MODE", 0))
 
 
 
@@ -98,6 +99,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "config.middleware.MaintenanceModeMiddleware",
 
 ]
 
@@ -184,3 +186,4 @@ EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 
 EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 
+SERVICE_UNAVAILABLE = True
